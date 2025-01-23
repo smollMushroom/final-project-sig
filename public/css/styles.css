@@ -41,13 +41,11 @@ main {
   width: 100%;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-  border-width: 1px;
-  border-color: #ced4da;
-  border-bottom-color: #ced4da;
   border-top-left-radius: 0.75rem;
   border-top-right-radius: 0.75rem;
   display: flex;
   justify-content: center;
+  border: none;
 }
 
 .map-container {
@@ -106,19 +104,6 @@ main {
   height: 100px;
 }
 
-/* Warna untuk tematik */
-.legend-labor {
-  background: linear-gradient(to bottom, rgb(0, 0, 255), white);
-}
-
-.legend-visitors {
-  background: linear-gradient(to bottom, rgb(255, 255, 0), rgb(255, 0, 0));
-}
-
-.legend-school {
-  background: linear-gradient(to bottom, rgb(255, 0, 0), rgb(0, 255, 0));
-}
-
 .legend {
   padding-inline: 8px;
   display: flex;
@@ -137,14 +122,16 @@ main {
 }
 
 .inactive-button {
-  background-color: #e2e8f0; /* Sama dengan bg-slate-200 */
-  border-bottom: 2px solid transparent;
+  background-color: #e2e8f0;
+  /* border-bottom: 2px solid transparent; */
+  border: 1px solid #ced4da;
   font-weight: normal;
 }
 
-/* Tombol dalam keadaan aktif */
 .active-button {
-  background-color: white; /* Latar belakang aktif */
-  border-bottom: none; /* Sama dengan border-b-neutral */
+  background-color: white;
+  border-bottom: none;
   font-weight: bold;
+  border: 1px solid #ced4da;
+  border-bottom: none;
 }
