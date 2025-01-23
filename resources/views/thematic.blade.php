@@ -1,10 +1,11 @@
-<x-layout :title="'Peta Gaji Rata-rata buruh Tahun 2024'">
+<x-layout>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const geojson = @json($geojson);
       const map = L.map('map').setView([-2, 117], 5);
       const tileLayerUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
       const attribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+      const infoContainer = document.getElementById('info');
 
       let selectedLayer = null;
       let maxValue = 0;
@@ -15,10 +16,10 @@
         , attribution
       }).addTo(map);
 
-      // Configuration for each type of data
       const dataConfig = {
         labor: {
           property: 'labor_wages_avg'
+          , title: 'Peta Rata-rata Upah Buruh Tahun 2024'
           , label: 'Upah Buruh'
           , unit: 'IDR'
           , colorScale: value => {
@@ -33,6 +34,7 @@
         }
         , visitors: {
           property: 'total_visitors'
+          , title: 'Peta Total Pengunjung Tahun 2024'
           , label: 'Total Pengunjung'
           , unit: 'orang'
           , colorScale: value => {
@@ -45,9 +47,10 @@
           , maxColor: 'rgb(255,255,0)'
           , minColor: 'rgb(255,0,0)'
         }
-        , school: {
-          property: 'total_SD', // Default to SD for now
-          label: 'Total Sekolah Dasar'
+        , sd: {
+          property: 'total_SD'
+          , title: 'Peta Jumlah Sekolah Dasar Tahun 2024'
+          , label: 'Total SD'
           , unit: 'sekolah'
           , colorScale: value => {
             const normalized = Math.min(Math.max(value, 0), maxValue);
@@ -56,25 +59,42 @@
             const blue = 0;
             return `rgb(${red},${green},${blue})`;
           }
-          , maxColor: 'rgb(255,0,0)'
+          , maxColor: 'rgb(255,255,0)'
           , minColor: 'rgb(0,255,0)'
+        }
+        , smp: {
+          property: 'total_SMP'
+          , title: 'Peta Jumlah Sekolah Menengah Pertama Tahun 2024'
+          , label: 'Total SMP'
+          , unit: 'sekolah'
+          , colorScale: value => {
+            const normalized = Math.min(Math.max(value, 0), maxValue) / maxValue;
+            const red = Math.round(218 + normalized * (255 - 218));
+            const green = Math.round(165 + normalized * (0 - 165));
+            const blue = Math.round(32 + normalized * (0 - 32));
+            return `rgb(${red},${green},${blue})`;
+          }
+          , maxColor: 'rgb(255,0,0)'
+          , minColor: 'rgb(218,165,32)'
         }
       };
 
-      let currentPage = 'labor';
+      let currentPage = 'visitors';
       setActiveNavButton(currentPage);
+      setTitleHeader(currentPage)
       maxValue = getMaxValue(currentPage);
       minValue = getMinValue(currentPage);
 
       loadGeoJson();
 
-      // Event listeners for tab buttons
       document.querySelectorAll('.nav-button').forEach(button => {
         button.addEventListener('click', () => {
           const page = button.id.replace('-button', '');
           if (page !== currentPage) {
             currentPage = page;
+            infoContainer.innerHTML = ""
             setActiveNavButton(currentPage);
+            setTitleHeader(currentPage);
             maxValue = getMaxValue(currentPage);
             minValue = getMinValue(currentPage);
             loadGeoJson();
@@ -113,39 +133,38 @@
           name
         } = feature.properties;
         const value = feature.properties[dataConfig[currentPage].property];
-        const infoContainer = document.getElementById('info');
 
         // Warna maksimum dan minimum
         const maxColor = dataConfig[currentPage].maxColor;
         const minColor = dataConfig[currentPage].minColor;
 
         infoContainer.innerHTML = `
-    <h2>Informasi</h2>
-    <div class="tematik-info">
-      <table>
-        <tr>
-          <td>Nama Provinsi</td>
-          <td>: ${name}</td>
-        </tr>
-        <tr>
-          <td>${dataConfig[currentPage].label}</td>
-          <td>: ${formatValue(value, dataConfig[currentPage].unit)}</td>
-        </tr>
-        <tr>
-          <td>Sumber Data</td>
-          <td>: Badan Pusat Statistik</td>
-        </tr>
-      </table>
-    </div>
-    <div class="legend">
-      <div class="gradient-legend" style="background: linear-gradient(to bottom, ${maxColor}, ${minColor}); width: 15px; height: 120px;"></div>
-      <ul>
-        <li>${formatValue(maxValue, dataConfig[currentPage].unit)}</li>
-        <li>${formatValue(maxValue / 2, dataConfig[currentPage].unit)}</li>
-        <li>0</li>
-      </ul>
-    </div>
-  `;
+            <h2>Informasi</h2>
+            <div class="tematik-info">
+            <table>
+                <tr>
+                <td>Nama Provinsi</td>
+                <td>: ${name}</td>
+                </tr>
+                <tr>
+                <td>${dataConfig[currentPage].label}</td>
+                <td>: ${formatValue(value, dataConfig[currentPage].unit)}</td>
+                </tr>
+                <tr>
+                <td>Sumber Data</td>
+                <td>: Badan Pusat Statistik</td>
+                </tr>
+            </table>
+            </div>
+            <div class="legend">
+            <div class="gradient-legend" style="background: linear-gradient(to bottom, ${maxColor}, ${minColor}); width: 15px; height: 120px;"></div>
+            <ul>
+                <li>${formatValue(maxValue, dataConfig[currentPage].unit)}</li>
+                <li>${formatValue(maxValue / 2, dataConfig[currentPage].unit)}</li>
+                <li>0</li>
+            </ul>
+            </div>
+        `;
       }
 
       function highlightLayer(layer) {
@@ -169,13 +188,11 @@
       }
 
       function setActiveNavButton(page) {
-        // Hapus kelas aktif dari semua tombol
         document.querySelectorAll('.nav-button').forEach(button => {
           button.classList.remove('active-button');
           button.classList.add('inactive-button');
         });
 
-        // Tambahkan kelas aktif ke tombol yang dipilih
         const activeButton = document.getElementById(`${page}-button`);
         activeButton.classList.add('active-button');
         activeButton.classList.remove('inactive-button');
@@ -193,6 +210,11 @@
 
       function formatValue(value, unit) {
         return `${new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 }).format(value)} ${unit}`;
+      }
+
+      function setTitleHeader(page) {
+        const title = document.getElementById('title');
+        title.innerHTML = dataConfig[page].title
       }
     });
 

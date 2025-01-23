@@ -1,3 +1,3 @@
 <header>
-  <h1 class="">{{ $slot }}</h1>
+  <h1 id="title"></h1>
 </header>

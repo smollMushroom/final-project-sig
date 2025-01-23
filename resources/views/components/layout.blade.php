@@ -20,14 +20,17 @@
   </style>
 </head>
 <body class="h-screen">
-  <x-header>{{ $title }}</x-header>
+  <x-header></x-header>
   <main>
     <div class="map-section">
       <div class="map-nav-button">
-        <button id="province-button" class="nav-button tab-button">Provinsi</button>
+        {{-- <button id="province-button" class="nav-button tab-button">Provinsi</button> --}}
         <button id="visitors-button" class="nav-button tab-button">Pengunjung</button>
         <button id="labor-button" class="nav-button tab-button">Upah Buruh</button>
-        <button id="school-button" class="nav-button tab-button">Sekolah</button>
+        <button id="sd-button" class="nav-button tab-button">Total SD</button>
+        <button id="smp-button" class="nav-button tab-button">Total SMP</button>
+        <button id="sma-button" class="nav-button tab-button">Total SMA</button>
+        <button id="smk-button" class="nav-button tab-button">Total SMK</button>
       </div>
       <div class="map-container">
         <div id="map"></div>
