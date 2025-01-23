@@ -17,7 +17,7 @@
   "env": {
     "APP_ENV": "production",
     "APP_DEBUG": "false",
-    "APP_URL": "https://yourprojectdomain.com",
+    "APP_URL": "https://final-project-j88iebgdl-smollmushrooms-projects.vercel.app",
     "APP_KEY": "base64:P5fFsavt8outFlxAITfkfef974LzB0S6HmsraeWyGUY=",
     "APP_CONFIG_CACHE": "/tmp/config.php",
     "APP_EVENTS_CACHE": "/tmp/events.php",
