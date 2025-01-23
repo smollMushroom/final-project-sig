@@ -59,7 +59,7 @@
             const blue = 0;
             return `rgb(${red},${green},${blue})`;
           }
-          , maxColor: 'rgb(255,255,0)'
+          , maxColor: 'rgb(255,0,0)'
           , minColor: 'rgb(0,255,0)'
         }
         , smp: {
