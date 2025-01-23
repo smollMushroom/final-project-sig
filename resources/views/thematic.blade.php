@@ -22,13 +22,7 @@
           , title: 'Peta Rata-rata Upah Buruh Tahun 2024'
           , label: 'Upah Buruh'
           , unit: 'IDR'
-          , colorScale: value => {
-            const normalized = Math.min(Math.max(value, 0), maxValue);
-            const red = 255 - Math.round((normalized / maxValue) * 255);
-            const green = 255 - Math.round((normalized / maxValue) * 255);
-            const blue = 255 - Math.round((normalized / maxValue) * 0);
-            return `rgb(${red},${green},${blue})`;
-          }
+          , colorScale: value => generateColorScale(value, 0, maxValue, 'rgb(255,255,255)', 'rgb(0,0,255)')
           , maxColor: 'rgb(0,0,255)'
           , minColor: 'white'
         }
@@ -37,13 +31,7 @@
           , title: 'Peta Total Pengunjung Tahun 2024'
           , label: 'Total Pengunjung'
           , unit: 'orang'
-          , colorScale: value => {
-            const normalized = Math.min(Math.max(value, 0), 12000000);
-            const red = 255 - Math.round((normalized / 12000000) * 0);
-            const green = Math.round((normalized / 12000000) * 255);
-            const blue = 0;
-            return `rgb(${red},${green},${blue})`;
-          }
+          , colorScale: value => generateColorScale(value, 0, 12000000, 'rgb(255,0,0)', 'rgb(255,255,0)')
           , maxColor: 'rgb(255,255,0)'
           , minColor: 'rgb(255,0,0)'
         }
@@ -52,13 +40,7 @@
           , title: 'Peta Jumlah Sekolah Dasar Tahun 2024'
           , label: 'Total SD'
           , unit: 'sekolah'
-          , colorScale: value => {
-            const normalized = Math.min(Math.max(value, 0), maxValue);
-            const red = Math.round((normalized / maxValue) * 255);
-            const green = 255 - Math.round((normalized / maxValue) * 255);
-            const blue = 0;
-            return `rgb(${red},${green},${blue})`;
-          }
+          , colorScale: value => generateColorScale(value, 0, maxValue, 'rgb(0,255,0)', 'rgb(255,0,0)')
           , maxColor: 'rgb(255,0,0)'
           , minColor: 'rgb(0,255,0)'
         }
@@ -67,15 +49,27 @@
           , title: 'Peta Jumlah Sekolah Menengah Pertama Tahun 2024'
           , label: 'Total SMP'
           , unit: 'sekolah'
-          , colorScale: value => {
-            const normalized = Math.min(Math.max(value, 0), maxValue) / maxValue;
-            const red = Math.round(218 + normalized * (255 - 218));
-            const green = Math.round(165 + normalized * (0 - 165));
-            const blue = Math.round(32 + normalized * (0 - 32));
-            return `rgb(${red},${green},${blue})`;
-          }
+          , colorScale: value => generateColorScale(value, 0, maxValue, 'rgb(218,165,32)', 'rgb(255,0,0)')
           , maxColor: 'rgb(255,0,0)'
           , minColor: 'rgb(218,165,32)'
+        }
+        , sma: {
+          property: 'total_SMA'
+          , title: 'Peta Jumlah Sekolah Menengah Atas Tahun 2024'
+          , label: 'Total SMA'
+          , unit: 'sekolah'
+          , colorScale: value => generateColorScale(value, 0, maxValue, 'rgb(195,55,100)', 'rgb(29,38,113)')
+          , maxColor: 'rgb(29,38,113)'
+          , minColor: 'rgb(195,55,100)'
+        }
+        , smk: {
+          property: 'total_SMK'
+          , title: 'Peta Jumlah Sekolah Menengah Kejuruan Tahun 2024'
+          , label: 'Total SMK'
+          , unit: 'sekolah'
+          , colorScale: value => generateColorScale(value, 0, maxValue, 'rgb(52,232,158)', 'rgb(15,52,67)')
+          , maxColor: 'rgb(15,52,67)'
+          , minColor: 'rgb(52,232,158)'
         }
       };
 
@@ -84,7 +78,6 @@
       setTitleHeader(currentPage)
       maxValue = getMaxValue(currentPage);
       minValue = getMinValue(currentPage);
-
       loadGeoJson();
 
       document.querySelectorAll('.nav-button').forEach(button => {
@@ -175,7 +168,7 @@
         layer.setStyle({
           weight: 2
           , color: 'yellow'
-          , fillOpacity: 0.9
+          , fillOpacity: 1
           , zIndex: 9999
         });
 
@@ -216,6 +209,20 @@
         const title = document.getElementById('title');
         title.innerHTML = dataConfig[page].title
       }
+
+      function generateColorScale(value, min, max, minColor, maxColor) {
+        const normalize = Math.min(Math.max(value, min), max);
+        const factor = (normalize - min) / (max - min);
+
+        const [r1, g1, b1] = minColor.match(/\d+/g).map(Number);
+        const [r2, g2, b2] = maxColor.match(/\d+/g).map(Number);
+
+        const r = Math.round(r1 + factor * (r2 - r1));
+        const g = Math.round(g1 + factor * (g2 - g1));
+        const b = Math.round(b1 + factor * (b2 - b1));
+
+        return `rgb(${r},${g},${b})`;
+      };
     });
 
   </script>

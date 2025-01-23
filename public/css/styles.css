@@ -4,6 +4,11 @@
   box-sizing: border-box;
   font-family: Roboto, Arial, Helvetica, sans-serif;
 }
+.leaflet-container a,
+
+.leaflet-container path {
+  outline: none;
+}
 
 header {
   border-bottom: 1px solid #ced4da;
@@ -114,32 +119,32 @@ main {
   background: linear-gradient(to bottom, rgb(255, 0, 0), rgb(0, 255, 0));
 }
 
-.legend{
-    padding-inline: 8px;
-    display: flex;
-    gap: 1rem;
+.legend {
+  padding-inline: 8px;
+  display: flex;
+  gap: 1rem;
 }
 
 .legend ul {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-.legend ul li{
-    font-size: 0.90em;
-    list-style-type: none;
-    line-height: none;
+.legend ul li {
+  font-size: 0.9em;
+  list-style-type: none;
+  line-height: none;
 }
 
 .inactive-button {
-    background-color: #e2e8f0; /* Sama dengan bg-slate-200 */
-    border-bottom: 2px solid transparent;
-    font-weight: normal;
-  }
+  background-color: #e2e8f0; /* Sama dengan bg-slate-200 */
+  border-bottom: 2px solid transparent;
+  font-weight: normal;
+}
 
-  /* Tombol dalam keadaan aktif */
-  .active-button {
-    background-color: white; /* Latar belakang aktif */
-    border-bottom: none; /* Sama dengan border-b-neutral */
-    font-weight: bold;
-  }
+/* Tombol dalam keadaan aktif */
+.active-button {
+  background-color: white; /* Latar belakang aktif */
+  border-bottom: none; /* Sama dengan border-b-neutral */
+  font-weight: bold;
+}
