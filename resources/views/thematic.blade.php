@@ -22,16 +22,16 @@
           , title: 'Peta Rata-rata Upah Buruh Tahun 2024'
           , label: 'Upah Buruh'
           , unit: 'IDR'
-          , colorScale: value => generateColorScale(value, 0, maxValue, 'rgb(255,255,255)', 'rgb(0,0,255)')
+          , colorScale: value => generateColorScale(value, minValue, maxValue, 'rgb(155, 170, 255)', 'rgb(0,0,255)')
           , maxColor: 'rgb(0,0,255)'
-          , minColor: 'white'
+          , minColor: 'rgb(155, 170, 255)'
         }
         , visitors: {
           property: 'total_visitors'
           , title: 'Peta Total Pengunjung Tahun 2024'
           , label: 'Total Pengunjung'
           , unit: 'orang'
-          , colorScale: value => generateColorScale(value, 0, 12000000, 'rgb(255,0,0)', 'rgb(255,255,0)')
+          , colorScale: value => generateColorScale(value, minValue, 12000000, 'rgb(255,0,0)', 'rgb(255,255,0)')
           , maxColor: 'rgb(255,255,0)'
           , minColor: 'rgb(255,0,0)'
         }
@@ -40,7 +40,7 @@
           , title: 'Peta Jumlah Sekolah Dasar Tahun 2024'
           , label: 'Total SD'
           , unit: 'sekolah'
-          , colorScale: value => generateColorScale(value, 0, maxValue, 'rgb(0,255,0)', 'rgb(255,0,0)')
+          , colorScale: value => generateColorScale(value, minValue, maxValue, 'rgb(0,255,0)', 'rgb(255,0,0)')
           , maxColor: 'rgb(255,0,0)'
           , minColor: 'rgb(0,255,0)'
         }
@@ -49,7 +49,7 @@
           , title: 'Peta Jumlah Sekolah Menengah Pertama Tahun 2024'
           , label: 'Total SMP'
           , unit: 'sekolah'
-          , colorScale: value => generateColorScale(value, 0, maxValue, 'rgb(218,165,32)', 'rgb(255,0,0)')
+          , colorScale: value => generateColorScale(value, minValue, maxValue, 'rgb(218,165,32)', 'rgb(255,0,0)')
           , maxColor: 'rgb(255,0,0)'
           , minColor: 'rgb(218,165,32)'
         }
@@ -58,7 +58,7 @@
           , title: 'Peta Jumlah Sekolah Menengah Atas Tahun 2024'
           , label: 'Total SMA'
           , unit: 'sekolah'
-          , colorScale: value => generateColorScale(value, 0, maxValue, 'rgb(195,55,100)', 'rgb(29,38,113)')
+          , colorScale: value => generateColorScale(value, minValue, maxValue, 'rgb(195,55,100)', 'rgb(29,38,113)')
           , maxColor: 'rgb(29,38,113)'
           , minColor: 'rgb(195,55,100)'
         }
@@ -67,7 +67,7 @@
           , title: 'Peta Jumlah Sekolah Menengah Kejuruan Tahun 2024'
           , label: 'Total SMK'
           , unit: 'sekolah'
-          , colorScale: value => generateColorScale(value, 0, maxValue, 'rgb(52,232,158)', 'rgb(15,52,67)')
+          , colorScale: value => generateColorScale(value, minValue, maxValue, 'rgb(52,232,158)', 'rgb(15,52,67)')
           , maxColor: 'rgb(15,52,67)'
           , minColor: 'rgb(52,232,158)'
         }
@@ -154,7 +154,7 @@
             <ul>
                 <li>${formatValue(maxValue, dataConfig[currentPage].unit)}</li>
                 <li>${formatValue(maxValue / 2, dataConfig[currentPage].unit)}</li>
-                <li>0</li>
+                <li>${formatValue(minValue, dataConfig[currentPage].unit)}</li>
             </ul>
             </div>
         `;
